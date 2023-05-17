@@ -5,10 +5,11 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Reserva {
+
     private Integer numeroQuarto;
     private Date checkIn;
     private Date checkOut;
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public Integer getNumeroQuarto() {
         return numeroQuarto;
@@ -61,12 +62,12 @@ public class Reserva {
         sb.append("Quarto: ");
         sb.append(numeroQuarto);
         sb.append(", check-in: ");
-        sb.append(checkIn);
+        sb.append(sdf.format(checkIn));
         sb.append(", check-out: ");
-        sb.append(checkOut);
+        sb.append(sdf.format(checkOut));
         sb.append(", ");
         sb.append(duracao());
-        sb.append("noites");
+        sb.append(" noites");
 
         return sb.toString();
     }
