@@ -10,9 +10,7 @@ public class ProgramaHotel {
     public static void main(String[] args) {
 
         /* TODO
-         *  - Contador de dias pra quanto tempo falta para o checkin
-         *  - Plural se for mais de uma noite, e se for somente uma, se NOITE
-         *  - Estrutura Do/while para repetir o código
+         *  - Correção do erro da estrutura Do/While
          */
         Scanner scanner = new Scanner(System.in);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -46,9 +44,6 @@ public class ProgramaHotel {
                 System.out.println("Erro na reserva: " + excecaoDominio.getMessage());
                 erro += 1;
             } catch (RuntimeException inputMismatchException) {
-                /* TODO
-                 *  - Emcapsulamento da excecao
-                 */
                 System.out.println("Formato de caracteres inválido");
                 erro += 1;
             }
