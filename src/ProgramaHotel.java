@@ -1,5 +1,5 @@
-
 import modelo.entidades.Reserva;
+import modelo.excecoes.ExcecaoDominio;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,46 +7,53 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class ProgramaHotel {
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
 
+        /* TODO
+         *  - Contador de dias pra quanto tempo falta para o checkin
+         *  - Plural se for mais de uma noite, e se for somente uma, se NOITE
+         *  - Estrutura Do/while para repetir o código
+         */
         Scanner scanner = new Scanner(System.in);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        int erro = 1;
 
-        System.out.print("Numero do quarto: ");
-        int numeroQuarto = scanner.nextInt();
-        System.out.print("Data de Check-In (DD/MM/YYYY): ");
-        Date dataCheckIn = sdf.parse(scanner.next());
-        System.out.print("Data de Check-Out (DD/MM/YYYY): ");
-        Date dataCheckOut = sdf.parse(scanner.next());
+        do {
+            try {
+                System.out.print("Numero do quarto (Somente numeros): ");
+                int numeroQuarto = scanner.nextInt();
+                System.out.print("Data de Check-In (DD/MM/YYYY): ");
+                Date dataCheckIn = sdf.parse(scanner.next());
+                System.out.print("Data de Check-Out (DD/MM/YYYY): ");
+                Date dataCheckOut = sdf.parse(scanner.next());
 
-        /* TODO
-         *  Resolução de inserção de caracteres invalidos (Datas tbm)
-         */
-
-        /* TODO
-         * Contador de dias pra quanto tempo falta para o checkin
-         */
-        if (!dataCheckOut.after(dataCheckIn)) {
-            System.out.print("Erro na reserva: a data de check-out tem que ser depois da data de check-in");
-        } else {
-            Reserva reserva = new Reserva(numeroQuarto, dataCheckIn, dataCheckOut);
-            System.out.println("Reserva: " + reserva);
-
-            System.out.println();
-            System.out.println("Insira as datas para atualizar a reserva: ");
-            System.out.print("Data de Check-In (DD/MM/YYYY): ");
-            dataCheckIn = sdf.parse(scanner.next());
-            System.out.print("Data de Check-Out (DD/MM/YYYY): ");
-            dataCheckOut = sdf.parse(scanner.next());
-
-            String erro = reserva.attDatas(dataCheckIn, dataCheckOut);
-            if (erro != null) {
-                System.out.println("Erro na reserva: " + erro);
-            } else {
+                Reserva reserva = new Reserva(numeroQuarto, dataCheckIn, dataCheckOut);
                 System.out.println("Reserva: " + reserva);
-            }
 
-        }
+                System.out.println();
+                System.out.println("Insira as datas para atualizar a reserva: ");
+                System.out.print("Data de Check-In (DD/MM/YYYY): ");
+                dataCheckIn = sdf.parse(scanner.next());
+                System.out.print("Data de Check-Out (DD/MM/YYYY): ");
+                dataCheckOut = sdf.parse(scanner.next());
+
+                reserva.attDatas(dataCheckIn, dataCheckOut);
+                System.out.println("Reserva: " + reserva);
+            } catch (ParseException parseException) {
+                System.out.println("Formato de data invalida");
+                erro += 1;
+            } catch (ExcecaoDominio excecaoDominio) {
+                System.out.println("Erro na reserva: " + excecaoDominio.getMessage());
+                erro += 1;
+            } catch (RuntimeException inputMismatchException) {
+                /* TODO
+                 *  - Emcapsulamento da excecao
+                 */
+                System.out.println("Formato de caracteres inválido");
+                erro += 1;
+            }
+        } while (erro != 1);
+
 
 
         scanner.close();

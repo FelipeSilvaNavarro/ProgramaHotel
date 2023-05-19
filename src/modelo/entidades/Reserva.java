@@ -1,5 +1,7 @@
 package modelo.entidades;
 
+import modelo.excecoes.ExcecaoDominio;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -8,7 +10,8 @@ public class Reserva {
     private Integer numeroQuarto;
     private Date checkIn;
     private Date checkOut;
-    public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    public static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    public static Date date = new Date();
 
     public Integer getNumeroQuarto() {
         return numeroQuarto;
@@ -26,7 +29,18 @@ public class Reserva {
         return checkOut;
     }
 
+    /**
+     * @param numeroQuarto
+     * @param checkIn
+     * @param checkOut     <p>Construtor da classe com as mesmas <b>REGRAS</b> da função "attDatas" </p>
+     */
     public Reserva(Integer numeroQuarto, Date checkIn, Date checkOut) {
+        if (checkIn.before(date) || checkOut.before(date)) {
+            throw new ExcecaoDominio("reservas devem ser feitas com datas futuras");
+        }
+        if (!checkOut.after(checkIn)) {
+            throw new ExcecaoDominio("a data de check-out tem que ser depois da data de check-in");
+        }
         this.numeroQuarto = numeroQuarto;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -49,18 +63,16 @@ public class Reserva {
      *                 <b>Regras:</b> <p>- Alteração de reserva só podem ocorrer para datas futuras</p>
      *                 <p>- A data de saída deve ser maior que a data de entrada</p>
      */
-    public String attDatas(Date checkIn, Date checkOut) {
-        Date now = new Date();
-        if (checkIn.before(now) || checkOut.before(now)) {
-            return "reservas devem ser feitas com datas futuras";
+    public void attDatas(Date checkIn, Date checkOut) {
+        if (checkIn.before(date) || checkOut.before(date)) {
+            throw new ExcecaoDominio("reservas devem ser feitas com datas futuras");
         }
         if (!checkOut.after(checkIn)) {
-            return "a data de check-out tem que ser depois da data de check-in";
+            throw new ExcecaoDominio("a data de check-out tem que ser depois da data de check-in");
         }
 
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        return null;
     }
 
 
@@ -78,5 +90,5 @@ public class Reserva {
         sb.append(" noites");
 
         return sb.toString();
-}
+    }
 }
