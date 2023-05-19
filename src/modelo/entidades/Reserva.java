@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Reserva {
-
     private Integer numeroQuarto;
     private Date checkIn;
     private Date checkOut;
@@ -50,9 +49,18 @@ public class Reserva {
      *                 <b>Regras:</b> <p>- Alteração de reserva só podem ocorrer para datas futuras</p>
      *                 <p>- A data de saída deve ser maior que a data de entrada</p>
      */
-    public void attDatas(Date checkIn, Date checkOut) {
+    public String attDatas(Date checkIn, Date checkOut) {
+        Date now = new Date();
+        if (checkIn.before(now) || checkOut.before(now)) {
+            return "reservas devem ser feitas com datas futuras";
+        }
+        if (!checkOut.after(checkIn)) {
+            return "a data de check-out tem que ser depois da data de check-in";
+        }
+
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+        return null;
     }
 
 
@@ -70,5 +78,5 @@ public class Reserva {
         sb.append(" noites");
 
         return sb.toString();
-    }
+}
 }

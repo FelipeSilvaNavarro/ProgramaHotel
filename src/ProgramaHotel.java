@@ -1,3 +1,4 @@
+
 import modelo.entidades.Reserva;
 
 import java.text.ParseException;
@@ -23,7 +24,7 @@ public class ProgramaHotel {
          */
 
         /* TODO
-        * Contador de dias pra quanto tempo falta para o checkin
+         * Contador de dias pra quanto tempo falta para o checkin
          */
         if (!dataCheckOut.after(dataCheckIn)) {
             System.out.print("Erro na reserva: a data de check-out tem que ser depois da data de check-in");
@@ -38,13 +39,10 @@ public class ProgramaHotel {
             System.out.print("Data de Check-Out (DD/MM/YYYY): ");
             dataCheckOut = sdf.parse(scanner.next());
 
-            Date now = new Date();
-            if (dataCheckIn.before(now) || dataCheckOut.before(now)) {
-                System.out.println("Erro na reserva: reservas devem ser feitas com datas futuras");
-            } else if (!dataCheckOut.after(dataCheckIn)){
-                System.out.print("Erro na reserva: a data de check-out tem que ser depois da data de check-in");
+            String erro = reserva.attDatas(dataCheckIn, dataCheckOut);
+            if (erro != null) {
+                System.out.println("Erro na reserva: " + erro);
             } else {
-                reserva.attDatas(dataCheckIn, dataCheckOut);
                 System.out.println("Reserva: " + reserva);
             }
 
